@@ -1,14 +1,11 @@
 import java.io.File;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Splits file names into words and counts their usage from a directory and its subdirectories.
  *
  * @author Danny Nguyen
- * @version 1.0
+ * @version 1.1
  * @since 1.0
  */
 public class AnalyzeFileNames {
@@ -66,14 +63,32 @@ public class AnalyzeFileNames {
    * Prints unique words by order of most frequently used.
    */
   private static void printUniqueWords() {
-    List<Map.Entry<String, Integer>> uniqueWordsList = new LinkedList<>(uniqueWords.entrySet());
-    uniqueWordsList.sort((i, j) -> j.getValue().compareTo(i.getValue()));
+    List<String> sortedWords = new ArrayList<>(uniqueWords.keySet());
+    Collections.sort(sortedWords);
 
-    StringBuilder entryBuilder = new StringBuilder();
-    for (Map.Entry<String, Integer> entry : uniqueWordsList) {
-      entryBuilder.append(entry.getValue()).append(": ").append(entry.getKey()).append("\n");
+    Map<Integer, List<String>> wordFrequency = new HashMap<>();
+    for (String word : sortedWords) {
+      int frequency = uniqueWords.get(word);
+      if (wordFrequency.containsKey(frequency)) {
+        wordFrequency.get(frequency).add(word);
+      } else {
+        wordFrequency.put(frequency, new ArrayList<>(List.of(word)));
+      }
     }
-    System.out.println(entryBuilder);
+
+    List<Integer> sortedFrequencies = new ArrayList<>(wordFrequency.keySet());
+    sortedFrequencies.sort(Collections.reverseOrder());
+
+    StringBuilder wordFrequencyBuilder = new StringBuilder();
+    for (int frequency : sortedFrequencies) {
+      List<String> words = wordFrequency.get(frequency);
+      wordFrequencyBuilder.append(frequency).append(": ").append(words.get(0));
+      for (int i = 1; i < words.size(); i++) {
+        wordFrequencyBuilder.append(", ").append(words.get(i));
+      }
+      wordFrequencyBuilder.append("\n");
+    }
+    System.out.println(wordFrequencyBuilder);
   }
 
   /**
