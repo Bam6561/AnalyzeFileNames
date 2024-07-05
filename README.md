@@ -3,6 +3,7 @@
 <!-- LOGO -->
 <div align="center">
   <h3>AnalyzeFileNames</h3>
+  <img src="https://i.ibb.co/hWV06b0/analyze-file-names-128x128.png" alt="analyze-file-names-128x128">
 
 [![Stargazers][stars-shield]][stars-url] [![License][license-shield]][license-url]
 </div>
